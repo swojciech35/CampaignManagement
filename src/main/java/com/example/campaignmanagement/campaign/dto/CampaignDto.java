@@ -24,4 +24,5 @@ public class CampaignDto {
   boolean status;
   String town;
   int radius;
+  UUID createdBy;
 }

@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,4 +20,5 @@ public class CreateCampaignDto {
   Boolean status;
   String town;
   Integer radius;
+  UUID createdBy;
 }

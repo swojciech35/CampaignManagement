@@ -8,7 +8,7 @@ trait CampaignSample {
     final static String NAME = "Campaign for 4K TV"
     final static String TOWN = "WARSAW"
     final static Set<String> KEYWORDS = ["TV", "4k", "UHD"] as Set
-
+    final static UUID SELLER_ID = UUID.randomUUID()
 
     CreateCampaignDto TV_CAMPAIGN = CreateCampaignDto.builder()
             .name(NAME)
@@ -18,6 +18,7 @@ trait CampaignSample {
             .town(TOWN)
             .bidAmount(BigDecimal.ONE)
             .radius(10)
+            .createdBy(SELLER_ID)
             .build()
 
     CampaignLightDto TV_CAMPAIGN_DTO = CampaignLightDto.builder()

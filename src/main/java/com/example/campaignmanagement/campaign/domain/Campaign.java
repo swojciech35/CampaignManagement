@@ -43,6 +43,8 @@ class Campaign {
 
   @Column(nullable = false)
   int radius;
+  @Column(nullable = false)
+  UUID createdBy;
 
 
   public CampaignDto toDto() {
@@ -55,6 +57,7 @@ class Campaign {
             .status(status)
             .town(town)
             .radius(radius)
+            .createdBy(createdBy)
             .build();
   }
 
@@ -82,6 +85,7 @@ class Campaign {
             .status(createCampaignDto.getStatus())
             .town(createCampaignDto.getTown())
             .radius(createCampaignDto.getRadius())
+            .createdBy(createCampaignDto.getCreatedBy())
             .build();
   }
 

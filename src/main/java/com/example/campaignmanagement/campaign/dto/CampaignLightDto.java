@@ -23,4 +23,5 @@ public class CampaignLightDto {
   boolean status;
   String town;
   int radius;
+  UUID createdBy;
 }

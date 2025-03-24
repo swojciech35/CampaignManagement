@@ -4,6 +4,8 @@ import com.example.campaignmanagement.campaign.dto.CampaignDto;
 import com.example.campaignmanagement.campaign.dto.CampaignLightDto;
 import com.example.campaignmanagement.campaign.dto.CreateCampaignDto;
 import com.example.campaignmanagement.campaign.exception.InvalidDataException;
+import com.example.campaignmanagement.seller.domain.SellerFacade;
+import com.example.campaignmanagement.seller.exception.SellerNotFoundException;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
@@ -14,9 +16,11 @@ import java.util.Objects;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CampaignFacade {
   CampaignRepository campaignRepository;
+  SellerFacade sellerFacade;
 
-  public CampaignFacade(CampaignRepository campaignRepository) {
+  public CampaignFacade(CampaignRepository campaignRepository, SellerFacade sellerFacade) {
     this.campaignRepository = campaignRepository;
+    this.sellerFacade = sellerFacade;
   }
 
   public List<CampaignLightDto> getAllCampaigns() {
@@ -24,6 +28,9 @@ public class CampaignFacade {
   }
 
   public CampaignDto createCampaign(CreateCampaignDto createCampaignDto) {
+    if (!sellerFacade.isSellerExists(createCampaignDto.getCreatedBy())) {
+      throw new SellerNotFoundException(createCampaignDto.getCreatedBy());
+    }
     if (!isValidData(createCampaignDto)) {
       throw new InvalidDataException("Invalid data in createCampaignDto");
     }
@@ -40,8 +47,7 @@ public class CampaignFacade {
             Objects.nonNull(createCampaignDto.getCampaignFund()) &&
             Objects.nonNull(createCampaignDto.getStatus()) &&
             Objects.nonNull(createCampaignDto.getTown()) &&
-            Objects.nonNull(createCampaignDto.getRadius())
-            && createCampaignDto.getRadius() > 0;
+            Objects.nonNull(createCampaignDto.getRadius());
   }
 
 }
