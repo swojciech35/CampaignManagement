@@ -34,6 +34,7 @@ class Campaign {
   BigDecimal bidAmount;
 
   @Column(nullable = false)
+
   BigDecimal campaignFund;
 
   @Column(nullable = false)
@@ -122,5 +123,12 @@ class Campaign {
             .map(keyword -> new CampaignKeyword(UUID.randomUUID(), this.id, keyword.getKeyword()))
             .collect(Collectors.toSet());
     return Stream.concat(campaignKeywordsToUpdate.stream(), newCampaignKeywords.stream()).collect(Collectors.toSet());
+  }
+
+  public void bid() {
+    this.campaignFund = this.campaignFund.subtract(bidAmount);
+    if (this.campaignFund.compareTo(BigDecimal.ZERO) <= 0 || this.campaignFund.compareTo(this.bidAmount) < 0) {
+      this.status = false;
+    }
   }
 }

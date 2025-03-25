@@ -50,6 +50,7 @@ class UpdateCampaignSpec extends Specification implements CampaignSample {
                                                        .bidAmount(BigDecimal.TEN)
                                                        .radius(100)
                                                        .keywords(Set.of("newKeyword"))
+                                                       .createdBy(SELLER_ID)
                                                        .build()]
     }
 

@@ -1,6 +1,7 @@
 package com.example.campaignmanagement.campaign.domain;
 
 import com.example.campaignmanagement.campaign.dto.*;
+import com.example.campaignmanagement.campaign.exception.BidNotAllowedException;
 import com.example.campaignmanagement.campaign.exception.CampaignDeleteNotAllowedException;
 import com.example.campaignmanagement.campaign.exception.CampaignNotFoundException;
 import com.example.campaignmanagement.campaign.exception.CampaignUpdateNotAllowedException;
@@ -79,9 +80,29 @@ public class CampaignFacade {
     return requestedSeller.equals(author);
   }
 
-    public CampaignDto getCampaignFullInfo(UUID campaignId) {
-        return campaignRepository.findById(campaignId)
-                .map(Campaign::toDto)
-                .orElseThrow(() -> new CampaignNotFoundException(campaignId));
+  public CampaignDto getCampaignFullInfo(UUID campaignId) {
+    return campaignRepository.findById(campaignId)
+            .map(Campaign::toDto)
+            .orElseThrow(() -> new CampaignNotFoundException(campaignId));
+  }
+
+  public CampaignDto placeBid(BidDto bidDto) {
+    Campaign campaign = campaignRepository.findById(bidDto.getCampaignId())
+            .orElseThrow(() -> new CampaignNotFoundException(bidDto.getCampaignId()));
+
+    if (!campaign.isStatus()) {
+      throw new BidNotAllowedException("Cannot bid on inactive campaign");
     }
+
+    if (campaign.getCampaignFund().compareTo(campaign.getBidAmount()) < 0) {
+      throw new BidNotAllowedException("Campaign fund is too low to place a bid");
+    }
+
+    if (campaign.getCreatedBy().equals(bidDto.getSellerId())) {
+      throw new BidNotAllowedException("Cannot bid on your own campaign");
+    }
+
+    campaign.bid();
+    return campaignRepository.save(campaign).toDto();
+  }
 }

@@ -32,8 +32,8 @@ public class DataInitializer {
       sellerFacade.addBalance(new AddBalanceDto(seller2Id, BigDecimal.valueOf(2000)));
 
       CreateCampaignDto campaign1 = CreateCampaignDto.builder()
-              .name("Campaign1")
-              .keywords(Set.of("keyword1", "keyword2"))
+              .name("Laptop Campaign")
+              .keywords(Set.of("laptop", "notebook"))
               .bidAmount(BigDecimal.valueOf(0.5))
               .campaignFund(BigDecimal.valueOf(500))
               .status(true)
@@ -43,8 +43,8 @@ public class DataInitializer {
               .build();
 
       CreateCampaignDto campaign2 = CreateCampaignDto.builder()
-              .name("Campaign2")
-              .keywords(Set.of("keyword3", "keyword4"))
+              .name("Smartphone Campaign")
+              .keywords(Set.of("smartphone", "mobile"))
               .bidAmount(BigDecimal.valueOf(2.5))
               .campaignFund(BigDecimal.valueOf(1000))
               .status(true)

@@ -39,7 +39,12 @@ public class CampaignController {
   }
 
   @GetMapping("/{campaignId}")
-  public CampaignDto getCampaignById(@PathVariable UUID campaignId) {
+  public CampaignDto getCampaignFullInfo(@PathVariable UUID campaignId) {
     return campaignFacade.getCampaignFullInfo(campaignId);
+  }
+
+  @PostMapping("/bid")
+  public CampaignDto placeBid(@RequestBody BidDto bidDto) {
+    return campaignFacade.placeBid(bidDto);
   }
 }

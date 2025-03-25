@@ -25,6 +25,30 @@ trait CampaignSample {
             .createdBy(SELLER_ID)
             .build()
 
+    CreateCampaignDto NOT_ACTIVE_TV_CAMPAIGN = CreateCampaignDto.builder()
+            .name(NAME)
+            .keywords(KEYWORDS)
+            .campaignFund(new BigDecimal(1000))
+            .status(false)
+            .town(WARSAW)
+            .bidAmount(BigDecimal.ONE)
+            .radius(10)
+            .createdBy(SELLER_ID)
+            .build()
+
+
+    CreateCampaignDto TV_CAMPAIGN_WITH_SMALL_CAMPAIGN_FUND = CreateCampaignDto.builder()
+            .name(NAME)
+            .keywords(KEYWORDS)
+            .campaignFund(new BigDecimal(20))
+            .status(true)
+            .town(WARSAW)
+            .bidAmount(new BigDecimal(10))
+            .radius(10)
+            .createdBy(SELLER_ID)
+            .build()
+
+
     CreateCampaignDto TV_CAMPAIGN_CREATED_BY_SELLER2 = CreateCampaignDto.builder()
             .name(NAME)
             .keywords(KEYWORDS)
@@ -44,5 +68,6 @@ trait CampaignSample {
             .town(WARSAW)
             .bidAmount(BigDecimal.ONE)
             .radius(10)
+            .createdBy(SELLER_ID)
             .build()
 }
