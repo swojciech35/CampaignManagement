@@ -133,7 +133,7 @@ public class InMemoryCampaignRepository implements CampaignRepository {
 
   @Override
   public void deleteById(UUID uuid) {
-
+  table.remove(uuid);
   }
 
   @Override

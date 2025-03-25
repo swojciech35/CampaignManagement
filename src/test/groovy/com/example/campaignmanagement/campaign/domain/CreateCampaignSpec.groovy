@@ -17,7 +17,7 @@ class CreateCampaignSpec extends Specification implements CampaignSample {
     CampaignFacade campaignFacade = new CampaignFacade(campaignRepository, sellerFacade)
 
     def setup() {
-        given: "Seller with id #SELLER_ID is exists"
+        given: "Seller with id #SELLER_ID  exists"
           sellerFacade.isSellerExists(SELLER_ID) >> true
         and: "Seller with id has enough balance"
           sellerFacade.hasEnoughBalance(SELLER_ID, _) >> true

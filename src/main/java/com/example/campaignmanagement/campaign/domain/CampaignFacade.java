@@ -1,9 +1,7 @@
 package com.example.campaignmanagement.campaign.domain;
 
-import com.example.campaignmanagement.campaign.dto.CampaignDto;
-import com.example.campaignmanagement.campaign.dto.CampaignLightDto;
-import com.example.campaignmanagement.campaign.dto.CreateCampaignDto;
-import com.example.campaignmanagement.campaign.dto.UpdateCampaignDto;
+import com.example.campaignmanagement.campaign.dto.*;
+import com.example.campaignmanagement.campaign.exception.CampaignDeleteNotAllowedException;
 import com.example.campaignmanagement.campaign.exception.CampaignNotFoundException;
 import com.example.campaignmanagement.campaign.exception.CampaignUpdateNotAllowedException;
 import com.example.campaignmanagement.seller.domain.SellerFacade;
@@ -47,7 +45,7 @@ public class CampaignFacade {
   public CampaignDto updateCampaign(UUID campaignId, UpdateCampaignDto updateCampaignDto) {
     Campaign campaign = campaignRepository.findById(campaignId)
             .orElseThrow(() -> new CampaignNotFoundException(campaignId));
-    if (!isAuthor(updateCampaignDto, campaign)) {
+    if (!isAuthor(updateCampaignDto.getUpdater(), campaign.getCreatedBy())) {
       throw new CampaignUpdateNotAllowedException();
     }
     CampaignValidator.validateDataToUpdate(updateCampaignDto);
@@ -65,7 +63,21 @@ public class CampaignFacade {
     return campaignRepository.save(campaign).toDto();
   }
 
-  private boolean isAuthor(UpdateCampaignDto updateCampaignDto, Campaign campaign) {
-    return updateCampaignDto.getUpdater().equals(campaign.getCreatedBy());
+  public void deleteCampaign(DeleteCampaignDto deleteCampaignDto) {
+    Campaign campaign = campaignRepository.findById(deleteCampaignDto.getCampaignId())
+            .orElseThrow(() -> new CampaignNotFoundException(deleteCampaignDto.getCampaignId()));
+    if (!isAuthor(deleteCampaignDto.getDeleterId(), campaign.getCreatedBy())) {
+      throw new CampaignDeleteNotAllowedException();
+    }
+    if (campaign.getCampaignFund().compareTo(BigDecimal.ZERO) > 0) {
+      sellerFacade.refundBalance(campaign.getCreatedBy(), campaign.getCampaignFund());
+    }
+    campaignRepository.deleteById(deleteCampaignDto.getCampaignId());
   }
+
+  private boolean isAuthor(UUID requestedSeller, UUID author) {
+    return requestedSeller.equals(author);
+  }
+
+
 }

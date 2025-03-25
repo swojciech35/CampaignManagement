@@ -18,11 +18,11 @@ class UpdateCampaignSpec extends Specification implements CampaignSample {
     CampaignDto campaign
 
     def setup() {
-        given: "Seller with id #SELLER_ID is exists"
+        given: "Seller with id #SELLER_ID exists"
           sellerFacade.isSellerExists(SELLER_ID) >> true
         and: "SELLER_ID has enough balance"
           sellerFacade.hasEnoughBalance(SELLER_ID, new BigDecimal(1000)) >> true
-        and: "Campaign is exists"
+        and: "Campaign exists"
           campaign = campaignFacade.createCampaign(TV_CAMPAIGN)
     }
 

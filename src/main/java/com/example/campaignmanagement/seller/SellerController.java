@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 import java.util.UUID;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/sellers")
 public class SellerController {

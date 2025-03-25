@@ -1,15 +1,12 @@
 package com.example.campaignmanagement.campaign;
 
 import com.example.campaignmanagement.campaign.domain.CampaignFacade;
-import com.example.campaignmanagement.campaign.dto.CampaignDto;
-import com.example.campaignmanagement.campaign.dto.CampaignLightDto;
-import com.example.campaignmanagement.campaign.dto.CreateCampaignDto;
-import com.example.campaignmanagement.campaign.dto.UpdateCampaignDto;
+import com.example.campaignmanagement.campaign.dto.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/campaigns")
 public class CampaignController {
@@ -33,5 +30,9 @@ public class CampaignController {
   @PutMapping("/{campaignId}")
   public CampaignDto updateCampaign(@PathVariable UUID campaignId, @RequestBody UpdateCampaignDto updateCampaignDto) {
     return campaignFacade.updateCampaign(campaignId, updateCampaignDto);
+  }
+  @PostMapping("/delete")
+  public void deleteCampaign(@RequestBody DeleteCampaignDto deleteCampaignDto) {
+    campaignFacade.deleteCampaign(deleteCampaignDto);
   }
 }
