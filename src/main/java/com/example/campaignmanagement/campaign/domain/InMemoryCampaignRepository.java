@@ -108,7 +108,7 @@ public class InMemoryCampaignRepository implements CampaignRepository {
 
   @Override
   public Optional<Campaign> findById(UUID uuid) {
-    return Optional.empty();
+    return table.values().stream().filter(campaign -> campaign.getId().equals(uuid)).findFirst();
   }
 
   @Override

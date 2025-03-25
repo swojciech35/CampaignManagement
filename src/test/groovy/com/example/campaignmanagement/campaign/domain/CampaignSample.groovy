@@ -21,6 +21,17 @@ trait CampaignSample {
             .createdBy(SELLER_ID)
             .build()
 
+    CreateCampaignDto TV_CAMPAIGN_WITH_INVALID_SELLER = CreateCampaignDto.builder()
+            .name(NAME)
+            .keywords(KEYWORDS)
+            .campaignFund(new BigDecimal(1000))
+            .status(true)
+            .town(TOWN)
+            .bidAmount(BigDecimal.ONE)
+            .radius(10)
+            .createdBy(UUID.randomUUID())
+            .build()
+
     CampaignLightDto TV_CAMPAIGN_DTO = CampaignLightDto.builder()
             .name(NAME)
             .keywords(KEYWORDS)
@@ -30,5 +41,4 @@ trait CampaignSample {
             .bidAmount(BigDecimal.ONE)
             .radius(10)
             .build()
-
 }

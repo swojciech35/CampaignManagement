@@ -1,6 +1,7 @@
 package com.example.campaignmanagement.seller;
 
 import com.example.campaignmanagement.seller.domain.SellerFacade;
+import com.example.campaignmanagement.seller.dto.AddBalanceDto;
 import com.example.campaignmanagement.seller.dto.CreateSellerDto;
 import com.example.campaignmanagement.seller.dto.SellerDto;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +33,10 @@ public class SellerController {
   @PostMapping("/")
   public void createSeller(@RequestBody CreateSellerDto createSellerDto) {
     sellerFacade.createSeller(createSellerDto);
+  }
+
+  @PutMapping("/add-balance")
+  public void addBalance(@RequestBody AddBalanceDto addBalanceDto) {
+    sellerFacade.addBalance(addBalanceDto);
   }
 }

@@ -1,8 +1,6 @@
 package com.example.campaignmanagement.campaign.domain;
 
-import com.example.campaignmanagement.campaign.dto.CampaignDto;
-import com.example.campaignmanagement.campaign.dto.CampaignLightDto;
-import com.example.campaignmanagement.campaign.dto.CreateCampaignDto;
+import com.example.campaignmanagement.campaign.dto.*;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,11 +9,13 @@ import java.math.BigDecimal;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 @AllArgsConstructor
 @Entity
 @Builder
+@EqualsAndHashCode
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 class Campaign {
@@ -27,7 +27,7 @@ class Campaign {
   String name;
 
   @OneToMany(mappedBy = "campaignId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  Set<CampaignKeywords> keywords;
+  Set<CampaignKeyword> keywords;
 
   @Column(nullable = false)
   BigDecimal bidAmount;
@@ -51,7 +51,7 @@ class Campaign {
     return CampaignDto.builder()
             .id(id)
             .name(name)
-            .keywords(keywords.stream().map(CampaignKeywords::toDto).collect(Collectors.toSet()))
+            .keywords(keywords.stream().map(CampaignKeyword::toDto).collect(Collectors.toSet()))
             .bidAmount(bidAmount)
             .campaignFund(campaignFund)
             .status(status)
@@ -65,7 +65,7 @@ class Campaign {
     return CampaignLightDto.builder()
             .id(id)
             .name(name)
-            .keywords(keywords.stream().map(CampaignKeywords::getKeyword).collect(Collectors.toSet()))
+            .keywords(keywords.stream().map(CampaignKeyword::getKeyword).collect(Collectors.toSet()))
             .bidAmount(bidAmount)
             .campaignFund(campaignFund)
             .status(status)
@@ -89,10 +89,35 @@ class Campaign {
             .build();
   }
 
-  private static Set<CampaignKeywords> toCampaignKeywords(UUID campaignId, Set<String> keywords) {
+  void update(UpdateCampaignDto updateCampaignDto) {
+    this.name = updateCampaignDto.getName();
+    this.keywords = updateKeywords(updateCampaignDto.getKeywords());
+    this.bidAmount = updateCampaignDto.getBidAmount();
+    this.campaignFund = updateCampaignDto.getCampaignFund();
+    this.status = updateCampaignDto.getStatus();
+    this.town = updateCampaignDto.getTown();
+    this.radius = updateCampaignDto.getRadius();
+  }
+
+  private static Set<CampaignKeyword> toCampaignKeywords(UUID campaignId, Set<String> keywords) {
     return keywords.stream()
-            .map(keyword -> new CampaignKeywords(UUID.randomUUID(), campaignId, keyword))
+            .map(keyword -> new CampaignKeyword(UUID.randomUUID(), campaignId, keyword))
             .collect(Collectors.toSet());
   }
 
+  private CampaignKeyword toCampaignKeyword(CampaignKeywordsDto campaignKeywordsDto) {
+    return new CampaignKeyword(campaignKeywordsDto.getCampaignKeywordsId(), this.id, campaignKeywordsDto.getKeyword());
+  }
+
+  private Set<CampaignKeyword> updateKeywords(Set<CampaignKeywordsDto> campaignKeywordsDto) {
+    Set<CampaignKeyword> campaignKeywordsToUpdate = campaignKeywordsDto.stream()
+            .filter(keyword -> keyword.getCampaignKeywordsId() != null)
+            .map(this::toCampaignKeyword)
+            .collect(Collectors.toSet());
+    Set<CampaignKeyword> newCampaignKeywords = campaignKeywordsDto.stream()
+            .filter(keyword -> keyword.getCampaignKeywordsId() == null)
+            .map(keyword -> new CampaignKeyword(UUID.randomUUID(), this.id, keyword.getKeyword()))
+            .collect(Collectors.toSet());
+    return Stream.concat(campaignKeywordsToUpdate.stream(), newCampaignKeywords.stream()).collect(Collectors.toSet());
+  }
 }

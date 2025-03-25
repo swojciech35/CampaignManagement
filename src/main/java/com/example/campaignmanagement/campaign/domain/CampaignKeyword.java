@@ -18,7 +18,7 @@ import java.util.UUID;
 @Getter
 @Table(name = "campaign_keywords")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CampaignKeywords {
+public class CampaignKeyword {
   @Id
   UUID campaignKeywordsId;
   UUID campaignId;
