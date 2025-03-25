@@ -47,4 +47,7 @@ class Seller {
     balance = balance.add(balanceToAdd);
   }
 
+  public void withdrawBalance(BigDecimal balanceToWithdraw) {
+    balance = balance.subtract(balanceToWithdraw);
+  }
 }

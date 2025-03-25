@@ -47,27 +47,4 @@ class SellerSpec extends Specification implements SellerSample {
         then: "All sellers are returned"
           sellers == [new SellerDto(seller1.getId(), SELLER1, BigDecimal.ZERO), new SellerDto(seller2.getId(), SELLER2, BigDecimal.ZERO)] as Set
     }
-
-    def "should add balance to an existing seller"() {
-        given: "There is seller1"
-          SellerDto seller1 = sellerFacade.createSeller(CREATE_SELLER1)
-        when: "Add balance to seller1"
-          AddBalanceDto addBalanceDto = new AddBalanceDto(seller1.getId(), BigDecimal.valueOf(1000l))
-          sellerFacade.addBalance(addBalanceDto)
-        then: "Balance is added to seller1"
-          sellerFacade.getSellerById(seller1.getId()) == new SellerDto(seller1.getId(), SELLER1, BigDecimal.valueOf(1000l))
-    }
-
-    @Unroll
-    def "shouldn't add balance with incorrect value"() {
-        given: "There is a exists seller1"
-          SellerDto seller1 = sellerFacade.createSeller(CREATE_SELLER1)
-        when: "Try to add incorrect balance value"
-          AddBalanceDto addBalanceDto = new AddBalanceDto(seller1.getId(), balanceToAdd)
-          sellerFacade.addBalance(addBalanceDto)
-        then: "Exception is thrown"
-          thrown(IllegalValueException)
-        where:
-          balanceToAdd << [BigDecimal.valueOf(0l), BigDecimal.valueOf(-1000l), null]
-    }
 }

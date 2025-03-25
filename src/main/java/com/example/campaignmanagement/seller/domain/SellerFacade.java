@@ -4,6 +4,7 @@ import com.example.campaignmanagement.seller.dto.AddBalanceDto;
 import com.example.campaignmanagement.seller.dto.CreateSellerDto;
 import com.example.campaignmanagement.seller.dto.SellerDto;
 import com.example.campaignmanagement.seller.exception.IllegalValueException;
+import com.example.campaignmanagement.seller.exception.NotEnoughBalanceException;
 import com.example.campaignmanagement.seller.exception.SellerAlreadyExistsException;
 import com.example.campaignmanagement.seller.exception.SellerNotFoundException;
 import lombok.AccessLevel;
@@ -58,6 +59,32 @@ public class SellerFacade {
 
   public boolean isSellerExists(UUID sellerId) {
     return sellerRepository.existsById(sellerId);
+  }
+
+  public boolean hasEnoughBalance(UUID sellerId, BigDecimal balanceToCheck) {
+    Seller seller = sellerRepository.findById(sellerId)
+            .orElseThrow(() -> new SellerNotFoundException(sellerId));
+    return seller.getBalance().compareTo(balanceToCheck) >= 0;
+  }
+
+  public void withdrawBalance(UUID sellerId, BigDecimal balanceToWithdraw) {
+    Seller seller = sellerRepository.findById(sellerId)
+            .orElseThrow(() -> new SellerNotFoundException(sellerId));
+    if (!hasEnoughBalance(sellerId, balanceToWithdraw)) {
+      throw new NotEnoughBalanceException("Seller does not have enough balance to withdraw");
+    }
+    seller.withdrawBalance(balanceToWithdraw);
+    sellerRepository.save(seller);
+  }
+
+  public void refundBalance(UUID sellerId, BigDecimal balanceToRefund) {
+    if (!isBalanceToAddIsCorrectValue(balanceToRefund)) {
+      throw new IllegalValueException("Balance to refund must be greater than 0");
+    }
+    Seller seller = sellerRepository.findById(sellerId)
+            .orElseThrow(() -> new SellerNotFoundException(sellerId));
+    seller.addBalance(balanceToRefund);
+    sellerRepository.save(seller);
   }
 
   private boolean isBalanceToAddIsCorrectValue(BigDecimal balanceToAdd) {

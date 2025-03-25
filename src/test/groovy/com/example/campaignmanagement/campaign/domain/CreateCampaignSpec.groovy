@@ -4,6 +4,7 @@ package com.example.campaignmanagement.campaign.domain
 import com.example.campaignmanagement.campaign.dto.CreateCampaignDto
 import com.example.campaignmanagement.campaign.exception.InvalidDataException
 import com.example.campaignmanagement.seller.domain.SellerFacade
+import com.example.campaignmanagement.seller.exception.NotEnoughBalanceException
 import com.example.campaignmanagement.seller.exception.SellerNotFoundException
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -11,13 +12,15 @@ import spock.lang.Unroll
 class CreateCampaignSpec extends Specification implements CampaignSample {
 
     CampaignRepository campaignRepository = new InMemoryCampaignRepository()
-    SellerFacade sellerFacade = Stub(SellerFacade)
+    SellerFacade sellerFacade = Mock(SellerFacade)
 
     CampaignFacade campaignFacade = new CampaignFacade(campaignRepository, sellerFacade)
 
     def setup() {
         given: "Seller with id #SELLER_ID is exists"
           sellerFacade.isSellerExists(SELLER_ID) >> true
+        and: "Seller with id has enough balance"
+          sellerFacade.hasEnoughBalance(SELLER_ID, _) >> true
     }
 
     def "Should create a new campaign"() {
@@ -25,6 +28,8 @@ class CreateCampaignSpec extends Specification implements CampaignSample {
           campaignFacade.createCampaign(TV_CAMPAIGN)
         then: "Campaign is created"
           campaignFacade.getAllCampaigns() == [TV_CAMPAIGN_DTO]
+        and: "Seller balance is deduced"
+          1 * sellerFacade.withdrawBalance(SELLER_ID, TV_CAMPAIGN.getCampaignFund())
     }
 
     @Unroll
@@ -45,7 +50,6 @@ class CreateCampaignSpec extends Specification implements CampaignSample {
           campaignFacade.getAllCampaigns().isEmpty()
         and: "Exception is thrown"
           thrown(InvalidDataException)
-
         where:
           scenario                                   | campaignName | campaignKeywords | campaignFund         | campaignTown | campaignRadius | campaignBidAmount  | campaignStatus
           "without set NAME"                         | null         | KEYWORDS         | new BigDecimal(1000) | TOWN         | 10             | BigDecimal.ONE     | true
@@ -61,11 +65,24 @@ class CreateCampaignSpec extends Specification implements CampaignSample {
     }
 
     def "Shouldn't create new campaign if Seller not exists"() {
-        when: "User create a new campaign"
-          campaignFacade.createCampaign(TV_CAMPAIGN_WITH_INVALID_SELLER)
+        when: "User creates a new campaign"
+          campaignFacade.createCampaign(TV_CAMPAIGN_CREATED_BY_SELLER2)
         then: "Campaign is not created"
           campaignFacade.getAllCampaigns().isEmpty()
         and: "Exception is thrown"
           thrown(SellerNotFoundException)
+    }
+
+    def "Shouldn't create new campaign if Seller has not enough balance"() {
+        given: "Seller2 exists"
+          sellerFacade.isSellerExists(SELLER2_ID) >> true
+        and: "Seller2 has not enough balance"
+          sellerFacade.hasEnoughBalance(SELLER2_ID, _) >> false
+        when: "Seller2 creates a new campaign"
+          campaignFacade.createCampaign(TV_CAMPAIGN_CREATED_BY_SELLER2)
+        then: "Campaign is not created"
+          campaignFacade.getAllCampaigns().isEmpty()
+        and: "Exception is thrown"
+          thrown(NotEnoughBalanceException)
     }
 }

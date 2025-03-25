@@ -9,6 +9,7 @@ trait CampaignSample {
     final static String TOWN = "WARSAW"
     final static Set<String> KEYWORDS = ["TV", "4k", "UHD"] as Set
     final static UUID SELLER_ID = UUID.randomUUID()
+    final static UUID SELLER2_ID = UUID.randomUUID()
 
     CreateCampaignDto TV_CAMPAIGN = CreateCampaignDto.builder()
             .name(NAME)
@@ -21,7 +22,7 @@ trait CampaignSample {
             .createdBy(SELLER_ID)
             .build()
 
-    CreateCampaignDto TV_CAMPAIGN_WITH_INVALID_SELLER = CreateCampaignDto.builder()
+    CreateCampaignDto TV_CAMPAIGN_CREATED_BY_SELLER2 = CreateCampaignDto.builder()
             .name(NAME)
             .keywords(KEYWORDS)
             .campaignFund(new BigDecimal(1000))
@@ -29,7 +30,7 @@ trait CampaignSample {
             .town(TOWN)
             .bidAmount(BigDecimal.ONE)
             .radius(10)
-            .createdBy(UUID.randomUUID())
+            .createdBy(SELLER2_ID)
             .build()
 
     CampaignLightDto TV_CAMPAIGN_DTO = CampaignLightDto.builder()
