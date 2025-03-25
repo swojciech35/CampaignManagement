@@ -4,6 +4,7 @@ import com.example.campaignmanagement.campaign.dto.CampaignDto
 import com.example.campaignmanagement.campaign.dto.CampaignKeywordsDto
 import com.example.campaignmanagement.campaign.dto.CampaignLightDto
 import com.example.campaignmanagement.campaign.dto.UpdateCampaignDto
+import com.example.campaignmanagement.campaign.enums.Town
 import com.example.campaignmanagement.campaign.exception.CampaignNotFoundException
 import com.example.campaignmanagement.campaign.exception.CampaignUpdateNotAllowedException
 import com.example.campaignmanagement.seller.domain.SellerFacade
@@ -34,7 +35,7 @@ class UpdateCampaignSpec extends Specification implements CampaignSample {
                   .name("New name")
                   .campaignFund(new BigDecimal(10000))
                   .status(true)
-                  .town("New town")
+                  .town(Town.CRACOW)
                   .bidAmount(BigDecimal.TEN)
                   .radius(100)
                   .keywords([new CampaignKeywordsDto(existsKeyword.getCampaignKeywordsId(), existsKeyword.getCampaignId(), "newKeyword")] as Set)
@@ -45,7 +46,7 @@ class UpdateCampaignSpec extends Specification implements CampaignSample {
                                                        .name("New name")
                                                        .campaignFund(new BigDecimal(10000))
                                                        .status(true)
-                                                       .town("New town")
+                                                       .town(Town.CRACOW)
                                                        .bidAmount(BigDecimal.TEN)
                                                        .radius(100)
                                                        .keywords(Set.of("newKeyword"))
@@ -58,7 +59,7 @@ class UpdateCampaignSpec extends Specification implements CampaignSample {
                   .name("New name")
                   .campaignFund(new BigDecimal(10000))
                   .status(true)
-                  .town("New town")
+                  .town(Town.CRACOW)
                   .bidAmount(BigDecimal.TEN)
                   .radius(100)
                   .keywords(campaign.getKeywords())
@@ -76,7 +77,7 @@ class UpdateCampaignSpec extends Specification implements CampaignSample {
                   .name("New name")
                   .campaignFund(new BigDecimal(10000))
                   .status(true)
-                  .town("New town")
+                  .town(Town.CRACOW)
                   .bidAmount(BigDecimal.TEN)
                   .radius(100)
                   .keywords(campaign.getKeywords())
@@ -92,7 +93,7 @@ class UpdateCampaignSpec extends Specification implements CampaignSample {
                   .name(NAME)
                   .campaignFund(new BigDecimal(100))
                   .status(true)
-                  .town(TOWN)
+                  .town(WARSAW)
                   .bidAmount(BigDecimal.TEN)
                   .radius(10)
                   .keywords(campaign.getKeywords())
@@ -110,7 +111,7 @@ class UpdateCampaignSpec extends Specification implements CampaignSample {
                   .name("New name")
                   .campaignFund(new BigDecimal(10000))
                   .status(true)
-                  .town("New town")
+                  .town(Town.CRACOW)
                   .bidAmount(BigDecimal.TEN)
                   .radius(100)
                   .keywords(campaign.getKeywords())

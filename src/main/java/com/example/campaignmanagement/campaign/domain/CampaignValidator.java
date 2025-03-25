@@ -3,6 +3,7 @@ package com.example.campaignmanagement.campaign.domain;
 import com.example.campaignmanagement.campaign.dto.CampaignKeywordsDto;
 import com.example.campaignmanagement.campaign.dto.CreateCampaignDto;
 import com.example.campaignmanagement.campaign.dto.UpdateCampaignDto;
+import com.example.campaignmanagement.campaign.enums.Town;
 import com.example.campaignmanagement.campaign.exception.InvalidDataException;
 
 import java.math.BigDecimal;
@@ -70,7 +71,7 @@ class CampaignValidator {
     }
   }
 
-  private static void validateTown(String town) {
+  private static void validateTown(Town town) {
     if (Objects.isNull(town)) {
       throw new InvalidDataException("Town cannot be null");
     }

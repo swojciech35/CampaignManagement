@@ -1,6 +1,7 @@
 package com.example.campaignmanagement.campaign.dto;
 
 
+import com.example.campaignmanagement.campaign.enums.Town;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -22,7 +23,7 @@ public class CampaignDto {
   BigDecimal bidAmount;
   BigDecimal campaignFund;
   boolean status;
-  String town;
+  Town town;
   int radius;
   UUID createdBy;
 }

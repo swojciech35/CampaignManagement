@@ -1,6 +1,7 @@
 package com.example.campaignmanagement.campaign.domain;
 
 import com.example.campaignmanagement.campaign.dto.*;
+import com.example.campaignmanagement.campaign.enums.Town;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -38,8 +39,9 @@ class Campaign {
   @Column(nullable = false)
   boolean status;
 
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  String town;
+  Town town;
 
   @Column(nullable = false)
   int radius;

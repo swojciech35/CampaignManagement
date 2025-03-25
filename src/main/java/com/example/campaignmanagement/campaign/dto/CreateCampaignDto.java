@@ -1,5 +1,6 @@
 package com.example.campaignmanagement.campaign.dto;
 
+import com.example.campaignmanagement.campaign.enums.Town;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,7 +19,7 @@ public class CreateCampaignDto {
   BigDecimal bidAmount;
   BigDecimal campaignFund;
   Boolean status;
-  String town;
+  Town town;
   Integer radius;
   UUID createdBy;
 }

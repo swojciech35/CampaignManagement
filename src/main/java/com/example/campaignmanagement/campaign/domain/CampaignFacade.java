@@ -79,5 +79,4 @@ public class CampaignFacade {
     return requestedSeller.equals(author);
   }
 
-
 }

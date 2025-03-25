@@ -52,16 +52,16 @@ class CreateCampaignSpec extends Specification implements CampaignSample {
           thrown(InvalidDataException)
         where:
           scenario                                   | campaignName | campaignKeywords | campaignFund         | campaignTown | campaignRadius | campaignBidAmount  | campaignStatus
-          "without set NAME"                         | null         | KEYWORDS         | new BigDecimal(1000) | TOWN         | 10             | BigDecimal.ONE     | true
-          "without set KEYWORDS"                     | NAME         | null             | new BigDecimal(1000) | TOWN         | 10             | BigDecimal.ONE     | true
-          "without set campaignFund"                 | NAME         | KEYWORDS         | null                 | TOWN         | 10             | BigDecimal.ONE     | false
+          "without set NAME"                         | null         | KEYWORDS         | new BigDecimal(1000) | WARSAW | 10   | BigDecimal.ONE     | true
+          "without set KEYWORDS"                     | NAME         | null             | new BigDecimal(1000) | WARSAW | 10   | BigDecimal.ONE     | true
+          "without set campaignFund"                 | NAME         | KEYWORDS         | null                 | WARSAW | 10   | BigDecimal.ONE     | false
           "without set campaignTown"                 | NAME         | KEYWORDS         | new BigDecimal(1000) | null         | 10             | BigDecimal.ONE     | true
-          "without set campaignRadius"               | NAME         | KEYWORDS         | new BigDecimal(1000) | TOWN         | null           | BigDecimal.ONE     | true
-          "without set campaignBidAmount"            | NAME         | KEYWORDS         | new BigDecimal(1000) | TOWN         | 10             | null               | true
-          "without set campaignStatus"               | NAME         | KEYWORDS         | new BigDecimal(1000) | TOWN         | 10             | BigDecimal.ONE     | null
-          "with set empty list KEYWORDS"             | NAME         | [] as Set        | new BigDecimal(1000) | TOWN         | 10             | BigDecimal.ONE     | true
-          "with campaignBidAmount is <0 "            | NAME         | KEYWORDS         | new BigDecimal(1000) | TOWN         | 10             | BigDecimal.ZERO    | true
-          "with bidAmount greater than campaignFund" | NAME         | KEYWORDS         | BigDecimal.TEN       | TOWN         | 10             | new BigDecimal(11) | true
+          "without set campaignRadius"               | NAME         | KEYWORDS         | new BigDecimal(1000) | WARSAW | null | BigDecimal.ONE     | true
+          "without set campaignBidAmount"            | NAME         | KEYWORDS         | new BigDecimal(1000) | WARSAW | 10   | null               | true
+          "without set campaignStatus"               | NAME         | KEYWORDS         | new BigDecimal(1000) | WARSAW | 10   | BigDecimal.ONE     | null
+          "with set empty list KEYWORDS"             | NAME         | [] as Set        | new BigDecimal(1000) | WARSAW | 10   | BigDecimal.ONE     | true
+          "with campaignBidAmount is <0 "            | NAME         | KEYWORDS         | new BigDecimal(1000) | WARSAW | 10   | BigDecimal.ZERO    | true
+          "with bidAmount greater than campaignFund" | NAME         | KEYWORDS         | BigDecimal.TEN       | WARSAW | 10   | new BigDecimal(11) | true
     }
 
     def "Shouldn't create new campaign if Seller not exists"() {
