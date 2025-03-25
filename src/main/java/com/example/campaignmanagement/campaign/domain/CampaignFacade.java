@@ -79,4 +79,9 @@ public class CampaignFacade {
     return requestedSeller.equals(author);
   }
 
+    public CampaignDto getCampaignFullInfo(UUID campaignId) {
+        return campaignRepository.findById(campaignId)
+                .map(Campaign::toDto)
+                .orElseThrow(() -> new CampaignNotFoundException(campaignId));
+    }
 }

@@ -1,12 +1,14 @@
 package com.example.campaignmanagement.campaign;
 
 import com.example.campaignmanagement.campaign.enums.Town;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/common")
 public class CommonController {

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/campaigns")
@@ -31,8 +32,14 @@ public class CampaignController {
   public CampaignDto updateCampaign(@PathVariable UUID campaignId, @RequestBody UpdateCampaignDto updateCampaignDto) {
     return campaignFacade.updateCampaign(campaignId, updateCampaignDto);
   }
+
   @PostMapping("/delete")
   public void deleteCampaign(@RequestBody DeleteCampaignDto deleteCampaignDto) {
     campaignFacade.deleteCampaign(deleteCampaignDto);
+  }
+
+  @GetMapping("/{campaignId}")
+  public CampaignDto getCampaignById(@PathVariable UUID campaignId) {
+    return campaignFacade.getCampaignFullInfo(campaignId);
   }
 }

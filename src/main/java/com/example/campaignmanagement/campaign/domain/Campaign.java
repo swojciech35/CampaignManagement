@@ -73,6 +73,7 @@ class Campaign {
             .status(status)
             .town(town)
             .radius(radius)
+            .createdBy(createdBy)
             .build();
   }
 
